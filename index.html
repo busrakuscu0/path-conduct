@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PacePad</title>
+    <title>PacePad | Core</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,7 +22,7 @@
           <ul class="nav__list">
             <li class="nav__list-item">
               <img src="./assets/icons/core-icon.svg" alt="Core Icon" />
-              <a href="#">CORE</a>
+              <a href="#" class="list-item--active">CORE</a>
             </li>
             <li class="nav__list-item">
               <img src="./assets/icons/mission-icon.svg" alt="Mission Icon" />
@@ -39,16 +39,28 @@
         </nav>
       </header>
 
-      <main>
-        <div class="input-container">
-          <input
-            type="text"
-            id="addMissionInput"
-            placeholder="Identify the target..."
-            class="mission-input"
-          />
-          <a href="addmission.html" class="btn btn--secondary">START MISSION</a>
+      <main class="main__container">
+        <div class="workspace">
+          <div class="mission-creator">
+            <input
+              type="text"
+              id="createMissionInput"
+              placeholder="Identify the target..."
+              class="mission-creator__input"
+            />
+            <a href="startmission.html" class="btn btn--secondary"
+              ><span class="btn__content"
+                >CREATE <br />
+                MISSION
+                <img
+                  src="./assets/icons/arrow-forward.svg"
+                  alt="Arrow Right Icon"
+              /></span>
+            </a>
+          </div>
+          <div class="focus-missions"></div>
         </div>
+        <div class="progress-card"></div>
       </main>
     </div>
     <footer class="footer">

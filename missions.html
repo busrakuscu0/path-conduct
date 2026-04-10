@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PacePad | Missions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="body-flex">
+      <header>
+        <nav class="nav">
+          <a href="#" class="nav__logo"
+            ><img src="./assets/pacepad-logo.svg" alt="Pacepad Logo" />
+          </a>
+          <ul class="nav__list">
+            <li class="nav__list-item">
+              <img src="./assets/icons/core-icon.svg" alt="Core Icon" />
+              <a href="index.html">CORE</a>
+            </li>
+            <li class="nav__list-item">
+              <img src="./assets/icons/mission-icon.svg" alt="Mission Icon" />
+              <a href="missions.html" class="list-item--active">MISSONS</a>
+            </li>
+            <li class="nav__list-item">
+              <img src="./assets/icons/strategy-icon.svg" alt="Strategy Icon" />
+              <a href="./strategies.html">STRATEGIES</a>
+            </li>
+          </ul>
+          <a href="addmission.html" class="btn btn--primary"
+            >INITIATE MISSION</a
+          >
+        </nav>
+      </header>
+      <main class="main__container">
+        <div class="mission-container">
+          <h1>ATOMIC COMMAND CENTER</h1>
+          <div id="activeMissions">
+            <h2>Active Missions</h2>
+          </div>
+          <div class="hidden" id="completedMissions">
+            <h2>Completed Missions</h2>
+          </div>
+        </div>
+        <div class="btn__group">
+          <button class="btn btn--tertiary btn--active" id="activeButton">
+            Active
+          </button>
+          <button class="btn btn--tertiary" id="completedButton">
+            Completed
+          </button>
+        </div>
+      </main>
+    </div>
+    <footer class="footer">
+      <a href="index.html">CORE</a>
+      <span>© 2026, Pacepad. All rights reserved.</span>
+      <span class="footer-right">
+        <a href="mailto:busra.kuscu@code2career.eu">Report</a>
+        <p>• LOCAL DATA</p>
+      </span>
+    </footer>
+    <script src="./missions.js"></script>
+  </body>
+</html>
