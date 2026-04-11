@@ -58,13 +58,18 @@ img {
 
 
 h1 {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.2rem;
   margin: 0;
+  color: #ffffff;
 }
 
 h2 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
 }
 
 .body-flex {
@@ -123,6 +128,23 @@ h2 {
   color: #A5B5C1;
 }
 
+.main__cont {
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  margin: 50px 60px;
+  color: #A5B5C1;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.main__title {
+  font-size: 32px;
+}
+
+
+
 .workspace {
   display: flex;
   flex-direction: column;
@@ -160,6 +182,34 @@ h2 {
   color: #ffffff77;
   font-size: 20px;
   outline: none;
+}
+
+.strategic-card__container {
+  display: flex;
+  flex-direction: row;
+  margin: 40px;
+  gap: 30px;
+}
+
+.strategic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+
+  flex: 1;
+  border: 1px solid #4857631d;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.card__text {
+  text-align: center;
+  font-size: 16px;
+  line-height: 150%;
+
 }
 
 .btn {
