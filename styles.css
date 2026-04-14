@@ -176,15 +176,253 @@ h2 {
   letter-spacing: 0.2rem;
 }
 
-.form-container {
+.form__container {
   width: 100%;
   max-width: 900px;
-  display: flex;
-  flex-direction: column;
   gap: 40px;
+
 }
 
+.form__header {
+  align-items: flex-end;
+  gap: 24px;
+}
+
+
+
+
+.grid__container {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  gap: 12px;
+
+}
+
+
+.mission-types__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: flex-start;
+  justify-content: start;
+  gap: 16px;
+}
+
+.mission-types__option {
+  border-radius: 10px;
+  border: 1px solid #2f313266;
+  background-color: #1c1e2033;
+  padding: 12px 50px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+
+.mission-types--active {
+  background-color: #162525;
+  border: 1px solid #1b453f;
+  box-shadow: 0 4px 15px rgba(41, 67, 63, 0.35);
+}
+
+.option__input {
+  display: none;
+}
+
+.option__content {
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.option__title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: rgba(243, 244, 246, 0.874)
+}
+
+.option__subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #656E70;
+}
+
+
+
+.allocation__container {
+  gap: 8px;
+
+}
+
+.duration__option {
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  padding: 12px 24px;
+  min-width: 70px;
+  min-height: 45px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  border: 1px solid #2f313266;
+  background-color: #1c1e205c;
+  color: #ffffffd7;
+
+}
+
+
+
+.mission-types__option:hover,
+.duration__option:hover {
+  background-color: #1a1c1e;
+}
+
+
+.duration__content {
+  font-weight: 600;
+  font-size: 14px;
+
+}
+
+.duration__option--active {
+  background-color: #ffffffd7;
+  color: #141414e4;
+}
+
+.custom-button {
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+
+
+.breakdown-section {
+  margin-top: 60px;
+}
+
+.atomic-breakdown__header {
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
+
+.atomic-breakdown__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.atomic-breakdown__subtitle {
+  font-size: 12px;
+}
+
+
+.atomic-breakdown__list {
+  gap: 20px;
+}
+
+
+.atomic-breakdown-row {
+  background-color: var(--tile-bg);
+  /* Daha önce tanımladığımız koyu kutu arka planı */
+  border: 1px solid var(--tile-border);
+  /* Daha önce tanımladığımız çok ince sınır */
+  border-radius: 12px;
+  padding: 16px 24px;
+  /* Numara ve input arasında boşluk oluşturur */
+  align-items: center;
+
+  /* Derinlik hissi veren gölge (önceki bölümlerle aynı) */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+
+  transition: all 0.2s ease;
+}
+
+/* Numara (01, 02) */
+.atomic-breakdown-row__number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #334142;
+  /* Görseldeki gibi koyu, soluk bir yeşil/gri */
+  margin-right: 24px;
+  /* Numara ile input arasındaki boşluk */
+  user-select: none;
+  /* Kullanıcı numarayı seçemesin */
+}
+
+/* Input Alanı (Define an atomic step...) */
+.atomic-breakdown-row__input {
+  flex: 1;
+  /* SİHİRLİ KOD: Kalan tüm yatay boşluğu bu input doldursun */
+
+  /* Input'un varsayılan stillerini sıfırlama */
+  background: none;
+  border: none;
+  outline: none;
+
+  /* Metin Stilleri */
+  font-size: 18px;
+  color: var(--text-primary);
+  /* Daha önce tanımladığımız kırık beyaz */
+  font-family: inherit;
+  padding: 0;
+  width: 100%;
+}
+
+/* Input'un Placeholder (Define...) Metni */
+.atomic-breakdown-row__input::placeholder {
+  color: #ffffff3a;
+  /* Çok şeffaf beyaz, daha önceki derslerde kullandığımız gibi */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.input-field {
+  border: none;
+  outline: none;
+  font-size: 20px;
+  color: #ffffffea;
+  background-color: #0b0b0b6d;
+  border-radius: 10px;
+  padding: 16px 32px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.form__legend {
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+
 fieldset {
+  flex: 1;
   border: none;
   /* Tarayıcının varsayılan çerçevesini kaldırıyoruz */
   padding: 0;
@@ -197,6 +435,62 @@ legend {
   padding: 0;
   display: table;
   /* Genişlik sorunlarını çözer */
+}
+
+.focus-toggle {
+  align-items: center;
+  padding: 16px;
+  width: fit-content;
+  background: #1a1c1e;
+  border-radius: 12px;
+}
+
+.toggle__label,
+.toggle__status {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b9a9a;
+}
+
+.toggle__switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  margin: 0 12px;
+}
+
+.toggle__switch input {
+  display: none;
+}
+
+.switch__slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  transition: 0.4s;
+  background: #2c3635;
+  border-radius: 24px;
+}
+
+.switch__slider:before {
+  position: absolute;
+  content: "";
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
+  transition: 0.4s;
+  background: #728c8a;
+  border-radius: 50%;
+}
+
+input:checked+.switch__slider {
+  background: #2e534dfb;
+}
+
+input:checked+.switch__slider:before {
+  transform: translateX(20px);
+  background: #a3c2c2;
 }
 
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PacePad | Start Mission</title>
+    <title>PacePad | Initiate Mission</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,75 +38,189 @@
           >
         </nav>
       </header>
-      <main class="main__container">
+      <main class="flex-column main__container">
         <h1>Architect Your Mission</h1>
-        <p>
-          Clarity is the fuel of focus. Break the monolith into atomic steps to
-          reduce cognitive friction and keep your momentum alive.
-        </p>
-        <form method="get" class="form__container" action="missions.html">
-          <fieldset>
-            <legend>MASTER OBJECTIVE</legend>
-            <input
-              type="text"
-              name="missionName"
-              placeholder="Identify your main mission"
-            />
-          </fieldset>
-          <fieldset>
-            <legend class="section-title">Mission Type</legend>
-            <div class="card-group">
-              <label>
-                <input
-                  type="radio"
-                  name="mission_type"
-                  value="deep_work"
-                  required
-                />
-                <div class="mission-card">
-                  <div class="mission-title">Deep Work</div>
-                </div>
-              </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name="mission_type"
-                  value="urgent"
-                  checked
-                  required
-                />
-                <div class="mission-card">
-                  <div class="mission-title">Urgent</div>
-                </div>
+        <form
+          method="get"
+          class="flex-column form__container"
+          action="missions.html"
+        >
+          <div class="flex-row form__header">
+            <fieldset>
+              <legend class="form__legend">MASTER OBJECTIVE</legend>
+              <input
+                class="input-field"
+                type="text"
+                name="missionName"
+                placeholder="Identify your main mission"
+              />
+            </fieldset>
+            <div class="flex-row focus-toggle">
+              <span class="toggle__label">FOCUS MODE</span>
+              <label class="toggle__switch">
+                <input type="checkbox" id="focusToggle" />
+                <span class="switch__slider"></span>
               </label>
+              <span class="toggle__status">ON</span>
+            </div>
+          </div>
 
-              <label>
+          <div class="flex-row grid__container">
+            <fieldset>
+              <legend class="form__legend">MISSION TYPE</legend>
+              <div class="mission-types__grid">
+                <label class="mission-types__option">
+                  <input
+                    type="radio"
+                    name="missionType"
+                    value="deep-work"
+                    class="option__input"
+                  />
+                  <span class="flex-column option__content">
+                    <span class="option__title">Deep Work</span>
+                    <span class="option__subtitle">BEAST MODE</span>
+                  </span>
+                </label>
+
+                <label class="mission-types__option">
+                  <input
+                    type="radio"
+                    name="missionType"
+                    value="urgent"
+                    class="option__input"
+                    checked
+                  />
+                  <span class="flex-column option__content">
+                    <span class="option__title">Urgent</span>
+                    <span class="option__subtitle">HIGH PRIORITY</span>
+                  </span>
+                </label>
+
+                <label class="mission-types__option">
+                  <input
+                    type="radio"
+                    name="missionType"
+                    value="routine"
+                    class="option__input"
+                  />
+                  <span class="flex-column option__content">
+                    <span class="option__title">Routine</span>
+                    <span class="option__subtitle">MAINTENANCE</span>
+                  </span>
+                </label>
+
+                <label class="mission-types__option">
+                  <input
+                    type="radio"
+                    name="missionType"
+                    value="routine"
+                    class="option__input"
+                  />
+
+                  <span class="flex-column option__content">
+                    <span class="option__title">Quick</span>
+                    <span class="option__subtitle">MOMENTUM</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="form__legend">TEMPORAL ALLOCATION</legend>
+              <div class="flex-row allocation__container">
+                <label class="flex-row duration__option">
+                  <input
+                    type="radio"
+                    name="duration"
+                    value="15m"
+                    class="option__input"
+                  />
+                  <span class="duration__content">15m</span>
+                </label>
+
+                <label class="flex-row duration__option">
+                  <input
+                    type="radio"
+                    name="duration"
+                    value="30m"
+                    class="option__input"
+                    checked
+                  />
+                  <span class="duration__content">30m</span>
+                </label>
+
+                <label class="flex-row duration__option">
+                  <input
+                    type="radio"
+                    name="duration"
+                    value="1h"
+                    class="option__input"
+                  />
+                  <span class="duration__content">1h</span>
+                </label>
+
+                <label class="flex-row duration__option">
+                  <input
+                    type="radio"
+                    name="duration"
+                    value="2h"
+                    class="option__input"
+                  />
+                  <span class="duration__content">2h</span>
+                </label>
+              </div>
+
+              <button
+                type="button"
+                class="duration__option duration__content custom-button"
+              >
+                Custom
+              </button>
+            </fieldset>
+          </div>
+          <fieldset class="breakdown-section">
+            <p>
+              Clarity is the fuel of focus. Break the monolith into atomic steps
+              to reduce cognitive friction and keep your momentum alive.
+            </p>
+            <div class="flex-row atomic-breakdown__header">
+              <legend class="atomic-breakdown__title">ATOMIC BREAKDOWN</legend>
+              <span class="atomic-breakdown__subtitle">STAGES 01—03</span>
+            </div>
+
+            <div class="flex-column atomic-breakdown__list">
+              <div class="flex-row atomic-breakdown-row">
+                <span class="atomic-breakdown-row__number">01</span>
                 <input
-                  type="radio"
-                  name="mission_type"
-                  value="routine"
-                  required
+                  type="text"
+                  name="step1"
+                  class="atomic-breakdown-row__input"
+                  placeholder="Define an atomic step..."
                 />
-                <div class="mission-card">
-                  <div class="mission-title">Routine</div>
-                </div>
-              </label>
-              <label>
+              </div>
+
+              <div class="flex-row atomic-breakdown-row">
+                <span class="atomic-breakdown-row__number">02</span>
                 <input
-                  type="radio"
-                  name="mission_type"
-                  value="sprint"
-                  required
+                  type="text"
+                  name="step2"
+                  class="atomic-breakdown-row__input"
+                  placeholder="Define an atomic step..."
                 />
-                <div class="mission-card">
-                  <div class="mission-title">Sprint</div>
-                </div>
-              </label>
+              </div>
+
+              <div class="flex-row atomic-breakdown-row">
+                <span class="atomic-breakdown-row__number">03</span>
+                <input
+                  type="text"
+                  name="step3"
+                  class="atomic-breakdown-row__input"
+                  placeholder="Define an atomic step..."
+                />
+              </div>
             </div>
           </fieldset>
-          <fieldset></fieldset>
-          <fieldset></fieldset>
         </form>
       </main>
     </div>
