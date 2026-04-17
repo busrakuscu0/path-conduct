@@ -38,13 +38,14 @@
           >
         </nav>
       </header>
-      <main class="flex-column main__container">
+      <main class="flex-column main__container justify-space-between">
         <h1>Architect Your Mission</h1>
 
         <form
           method="get"
           class="flex-column form__container"
           action="missions.html"
+          id="formElement"
         >
           <div class="flex-row form__header">
             <fieldset>
@@ -125,103 +126,110 @@
                 </label>
               </div>
             </fieldset>
-
-            <fieldset>
-              <legend class="form__legend">TEMPORAL ALLOCATION</legend>
-              <div class="flex-row allocation__container">
-                <label class="flex-row duration__option">
-                  <input
-                    type="radio"
-                    name="duration"
-                    value="15m"
-                    class="option__input"
-                  />
-                  <span class="duration__content">15m</span>
-                </label>
-
-                <label class="flex-row duration__option">
-                  <input
-                    type="radio"
-                    name="duration"
-                    value="30m"
-                    class="option__input"
-                    checked
-                  />
-                  <span class="duration__content">30m</span>
-                </label>
-
-                <label class="flex-row duration__option">
-                  <input
-                    type="radio"
-                    name="duration"
-                    value="1h"
-                    class="option__input"
-                  />
-                  <span class="duration__content">1h</span>
-                </label>
-
-                <label class="flex-row duration__option">
-                  <input
-                    type="radio"
-                    name="duration"
-                    value="2h"
-                    class="option__input"
-                  />
-                  <span class="duration__content">2h</span>
-                </label>
-              </div>
-
-              <button
-                type="button"
-                class="duration__option duration__content custom-button"
-              >
-                Custom
-              </button>
-            </fieldset>
           </div>
-          <fieldset class="breakdown-section">
-            <p>
-              Clarity is the fuel of focus. Break the monolith into atomic steps
-              to reduce cognitive friction and keep your momentum alive.
+          <fieldset id="fieldsetContainer">
+            <p class="breakdown__text">
+              <b>Clarity is the fuel of focus.</b> <br />
+              Break the monolith into atomic steps to reduce <br />
+              cognitive friction and keep your momentum alive.
             </p>
-            <div class="flex-row atomic-breakdown__header">
-              <legend class="atomic-breakdown__title">ATOMIC BREAKDOWN</legend>
-              <span class="atomic-breakdown__subtitle">STAGES 01—03</span>
+            <div class="flex-row breakdown__header">
+              <legend>ATOMIC BREAKDOWN</legend>
+              <span class="breakdown__subtitle">STAGES 01—02</span>
             </div>
 
-            <div class="flex-column atomic-breakdown__list">
-              <div class="flex-row atomic-breakdown-row">
-                <span class="atomic-breakdown-row__number">01</span>
+            <div class="flex-column breakdown__list" id="breakdownList">
+              <div class="flex-row breakdown__list-item">
+                <span class="list-item__number">01</span>
                 <input
                   type="text"
-                  name="step1"
-                  class="atomic-breakdown-row__input"
+                  class="breakdown__input"
                   placeholder="Define an atomic step..."
                 />
+
+                <div>
+                  <button
+                    type="button"
+                    class="btn flex-row set-time"
+                    id="setTimeButton"
+                  >
+                    <img
+                      src="assets/icons/schedule-icon.svg"
+                      alt="Schedule Icon"
+                    />
+                    <span> SET TIME </span>
+                  </button>
+                </div>
               </div>
 
-              <div class="flex-row atomic-breakdown-row">
-                <span class="atomic-breakdown-row__number">02</span>
+              <div class="flex-row breakdown__list-item">
+                <span class="list-item__number">02</span>
                 <input
                   type="text"
-                  name="step2"
-                  class="atomic-breakdown-row__input"
+                  class="breakdown__input"
                   placeholder="Define an atomic step..."
                 />
+                <div>
+                  <button type="button" class="btn flex-row set-time">
+                    <img
+                      src="assets/icons/schedule-icon.svg"
+                      alt="Schedule Icon"
+                    />
+                    <span> SET TIME </span>
+                  </button>
+                </div>
               </div>
+              <template id="stepTemplate">
+                <div class="flex-row breakdown__list-item">
+                  <span class="list-item__number">00</span>
+                  <input
+                    type="text"
+                    class="breakdown__input"
+                    placeholder="Define an atomic step..."
+                  />
+                  <div>
+                    <button type="button" class="btn flex-row set-time">
+                      <img
+                        src="assets/icons/schedule-icon.svg"
+                        alt="Schedule Icon"
+                      />
+                      <span> SET TIME </span>
+                    </button>
+                  </div>
+                </div>
+              </template>
 
-              <div class="flex-row atomic-breakdown-row">
-                <span class="atomic-breakdown-row__number">03</span>
-                <input
-                  type="text"
-                  name="step3"
-                  class="atomic-breakdown-row__input"
-                  placeholder="Define an atomic step..."
-                />
+              <div class="flex-row breakdown__list-item" id="addStepBtn">
+                <img src="./assets/icons/add-icon.svg" />
+                <button type="button" class="btn btn__add-step">
+                  ADD ATOMIC STEP
+                </button>
               </div>
             </div>
           </fieldset>
         </form>
+        <div class="flex-row calibration-box hidden" id="calibrationBox">
+          <div class="flex-column time-column" id="columnHour">
+            <span class="col__label">HOUR</span>
+            <button id="btnHourUp" class="nav-btn">⌃</button>
+
+            <div id="displayHour" class="val active"></div>
+
+            <button id="btnHourDown" class="nav-btn">⌄</button>
+          </div>
+
+          <div class="time-separator">:</div>
+
+          <div class="flex-column time-column" id="columnMinute">
+            <span class="col__label">MINUTE</span>
+            <button id="btnMinuteUp" class="nav-btn">⌃</button>
+
+            <div id="displayMinute" class="val active"></div>
+
+            <button id="btnMinuteDown" class="nav-btn">⌄</button>
+          </div>
+          <div class="btn--set-time" id="timePickerButton">SET TIME</div>
+        </div>
       </main>
     </div>
     <footer class="footer">
