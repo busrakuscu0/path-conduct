@@ -572,39 +572,27 @@ fieldset {
   opacity: 1;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@property --val {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
+.mission-card {
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 40px;
+  border-left: 4px solid #687474b2;
+  box-shadow: 0 0 5px rgba(130, 127, 127, 0.138);
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 900px;
 }
 
-/* 1. Ana Kutumuz (Sadece yazıyı ve boyutu tutuyor) */
-.atomic-ring {
+.mission-card__header {
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.progress-ring {
   position: relative;
-  /* İçindeki çemberi hizalamak için gerekli */
   width: 60px;
   height: 60px;
   display: flex;
@@ -614,57 +602,23 @@ fieldset {
   font-weight: bold;
   color: #fff;
   z-index: 1;
-  /* Yazıyı en öne alıyoruz */
 }
 
-/* 2. Çemberin Kendisi (Sadece arka planda bir hayalet gibi duruyor) */
-.atomic-ring::before {
+.progress-ring::before {
   content: "";
   position: absolute;
   inset: 0;
-  /* Kutuyu tam olarak kapla */
   border-radius: 50%;
   z-index: -1;
-  /* Yazının arkasına geç */
-
-  /* Çizim ve Maskeleme işlerini sadece bu arka plana veriyoruz */
   background: conic-gradient(#8ebeb576 calc(var(--val) * 1%), #2a2a2a 0);
   -webkit-mask: radial-gradient(farthest-side, transparent 75%, black 80%);
   mask: radial-gradient(farthest-side, transparent 75%, black 80%);
-
   transition: --val 0.6s ease-out;
-  /* Animasyon burada */
-}
-
-.mission-card__header {
-  cursor: pointer;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  max-width: 1100px;
-
 }
 
 .title-wrapper {
-  margin-left: 20px;
-  gap: 8px;
-}
-
-.mission-card {
-  align-items: baseline;
-  justify-content: flex-start;
-  margin-top: 40px;
-  border: 1px solid #bfc0c01c;
-  border-left: 5px solid #cdcdcde6;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
-
-}
-
-.mission-card__status {
-  gap: 32px;
+  margin-left: 32px;
+  gap: 16px;
 }
 
 .mission-card__type {
@@ -679,39 +633,37 @@ fieldset {
   border: 0.5px solid #bb5551;
 }
 
-/* Ok ikonuna dönme animasyonu ekleyelim */
+.mission-card__status {
+  gap: 40px;
+}
+
 .chevron-icon {
   display: inline-block;
   transition: transform 0.3s ease;
 }
 
-/* Kapanıp açılacak alanın İSKELETİ (CSS Grid Büyüsü) */
-.mission-body-wrapper {
+.mission__body-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  /* Kapalıyken yüksekliği 0 */
   transition: grid-template-rows 0.4s ease-out;
-  /* Pürüzsüz geçiş süresi */
 }
 
-/* İçeriğin taşmasını engelle */
-.mission-body {
+.mission__body {
   overflow: hidden;
 }
 
+.mission__body-item {
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+}
 
-
-/* =========================================
-   AÇIK OLDUĞUNDA ÇALIŞACAK CSS
-   ========================================= */
-.mission-card.is-open .mission-body-wrapper {
+.mission-card.is-open .mission__body-wrapper {
   grid-template-rows: 1fr;
-  /* Yüksekliği içindeki eleman kadar olsun */
 }
 
 .mission-card.is-open .chevron-icon {
   transform: rotate(180deg);
-  /* Oku yukarı çevir */
 }
 
 
