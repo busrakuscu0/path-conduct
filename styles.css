@@ -580,16 +580,24 @@ fieldset {
 
 .mission-card {
   gap: 60px;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   margin-top: 40px;
-  border-left: 4px solid #687474b2;
-  box-shadow: 0 0 5px rgba(130, 127, 127, 0.138);
+  border-left: 4px solid #134b4bb2;
+  background-color: #171a1981;
+  border: 1px solid #393d3d25;
   border-radius: 10px;
-  padding: 20px;
+  padding: 40px;
   width: 100%;
 
 }
+
+.mission-card:active {
+  border: 1px solid #b7baba46;
+
+}
+
+
 
 .mission-card__header {
   cursor: pointer;
@@ -616,6 +624,10 @@ fieldset {
   justify-content: center;
 }
 
+.progress-value {
+  font-size: 12px;
+}
+
 
 .title-wrapper {
   margin-left: 32px;
@@ -623,24 +635,25 @@ fieldset {
 }
 
 .mission-card__type {
-  color: #bb5551;
+  color: #fbfbfb;
   font-weight: 700;
   font-size: 12px;
   max-width: fit-content;
-  background-color: #7f282734;
+  background-color: #3a8ac348;
   text-align: center;
   padding: 2px 8px;
   border-radius: 3px;
-  border: 0.5px solid #bb5551;
+  border: 0.5px solid #3362835f;
 }
 
 .mission-card__status {
-
+  align-items: flex-start;
   gap: 60px;
 }
 
 .card__status {
-  gap: 12px;
+  gap: 16px;
+  align-items: flex-end;
 }
 
 .status__title {
@@ -649,8 +662,14 @@ fieldset {
   color: #a5b5c18f;
 }
 
+.status__label {
+  font-size: 12px;
+  color: #a5b5c18f;
+}
+
 .status__time {
   font-weight: 700;
+
 }
 
 
@@ -660,22 +679,22 @@ fieldset {
   transition: transform 0.3s ease;
 }
 
-.chevron-icon.rotate {
+.rotate {
   transform: rotate(180deg);
 }
 
 .mission-card__body {
-
-
+  gap: 40px;
   width: 100%;
 }
 
 .mission-card__list {
+  gap: 16px;
   list-style: none;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: baseline;
+  align-items: baseline;
   font-size: 14px;
-  margin-left: 60px;
+
 }
 
 .status-message {
@@ -700,20 +719,20 @@ fieldset {
   justify-content: space-between;
   max-width: 1000px;
   width: 100%;
-  margin-bottom: 40px;
+
   padding: 16px;
-  border: 1px solid #57595a31;
-  border-radius: 16px;
+
 }
 
 .list-item__time {
   color: #f0f1f2;
-  background: #335b696a;
+  background: #292d2e5f;
   text-align: center;
   padding: 12px 24px;
   min-width: 120px;
   border-radius: 10px;
   text-transform: uppercase;
+  margin-right: 20px;
 }
 
 

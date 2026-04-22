@@ -51,6 +51,7 @@ let currentHour = 0;
 let currentMinute = 0;
 let finalTime = null;
 let formCorrect = true;
+let editingMissionId = null;
 
 // FUNCTIONS
 
@@ -110,17 +111,19 @@ function showError() {
   errorMessage.classList.remove("hidden");
 }
 
+function formatTimeText(hours, minutes) {
+  if (hours === 0) return `${minutes}M`;
+  if (minutes === 0) return `${hours}H`;
+  return `${hours}H ${minutes}M`;
+}
+
 function timePicker() {
   if (currentHour === 0 && currentMinute === 0) {
     showError();
     return;
-  } else if (currentHour === 0) {
-    finalTime = `${currentMinute}M`;
-  } else if (currentMinute === 0) {
-    finalTime = `${currentHour}H`;
-  } else {
-    finalTime = `${currentHour}H ${currentMinute}M`;
   }
+
+  finalTime = formatTimeText(currentHour, currentMinute);
 
   if (targetButton) {
     targetButton.textContent = finalTime;
@@ -257,7 +260,25 @@ function switchTab(tab) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", renderMissions);
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. DURUM: ANA SAYFADA MIYIZ?
+  // Ana sayfada kesinlikle olan ama form sayfasında olmayan bir element seçiyoruz (Örn: activeMissions listesi)
+  const isMainPage = activeMissions; // Kendi container class'ını yaz
+
+  if (isMainPage) {
+    // Sadece ana sayfadaysak kartları çiz!
+    renderMissions();
+  }
+
+  // 2. DURUM: FORM SAYFASINDA MIYIZ?
+  // Form sayfasında kesinlikle olan ama ana sayfada olmayan bir element seçiyoruz (Örn: form başlık inputu)
+  const isFormPage = missionMainTitle;
+
+  if (isFormPage) {
+    // Sadece form sayfasındaysak form doldurma işlemlerini yap!
+    initFormPage();
+  }
+});
 
 activeButton?.addEventListener("click", () => switchTab("active"));
 completedButton?.addEventListener("click", () => switchTab("completed"));
@@ -310,11 +331,9 @@ formElement?.addEventListener("submit", function (event) {
     stepInputs.forEach((input) => {
       const stepName = input.value.trim();
 
-      if (stepName !== "") {
-        const parentRow = input.closest(".breakdown__list-item");
-        const timeBtn = parentRow.querySelector(".set-time__button");
-        let selectedTime = timeBtn.textContent.trim();
-      }
+      const parentRow = input.closest(".breakdown__list-item");
+      const timeBtn = parentRow.querySelector(".set-time__button");
+      let selectedTime = timeBtn.textContent.trim();
 
       atomicStepsArray.push({
         name: stepName,
@@ -353,25 +372,39 @@ function showStatusMessage(message) {
   }, 3000);
 }
 
-function toggleMissionStatus(
-  targetContainer,
-  statusText,
-  buttonText,
-  message,
-  card,
-) {
-  if (targetContainer && card) {
-    targetContainer.appendChild(card);
-  }
+function calculateRemainingTime(steps) {
+  let remainingMinutes = 0;
 
-  const cardStatus = card.querySelector(".mission-card__status");
-  const completeAllButton = card.querySelector(".complete-all__button");
+  steps.forEach((step) => {
+    if (!step.completed && step.time) {
+      const matchHours = step.time.match(/(\d+)H/i);
+      const matchMinutes = step.time.match(/(\d+)M/i);
 
-  if (cardStatus) cardStatus.textContent = statusText;
-  if (completeAllButton) completeAllButton.textContent = buttonText;
+      const hours = matchHours ? parseInt(matchHours[1]) : 0;
+      const minutes = matchMinutes ? parseInt(matchMinutes[1]) : 0;
 
-  if (message) {
-    showStatusMessage(message);
+      remainingMinutes += hours * 60 + minutes;
+    }
+  });
+
+  const finalHours = Math.floor(remainingMinutes / 60);
+  const finalMinutes = remainingMinutes % 60;
+
+  return formatTimeText(finalHours, finalMinutes);
+}
+
+function updateCardVisuals(cardElement, mission) {
+  const statusTime = cardElement.querySelector(".status__time");
+  const completeAllButton = cardElement.querySelector(".complete-all__button");
+  const isCompleted = mission.status === "completed";
+
+  if (isCompleted) {
+    statusTime.textContent = "Completed";
+    completeAllButton.textContent = "MARK ALL AS INCOMPLETE";
+  } else {
+    const remainingTime = calculateRemainingTime(mission.steps);
+    statusTime.textContent = remainingTime;
+    completeAllButton.textContent = "MARK ALL AS COMPLETE";
   }
 }
 
@@ -404,24 +437,94 @@ function updateProgress(cardElement) {
 
     if (percentage === 100 && currentStatus !== "completed") {
       allMissions[missionIndex].status = "completed";
-      toggleMissionStatus(
-        completedMissions,
-        "Completed",
-        "MARK ALL AS INCOMPLETE",
-        "Mission completed successfully!",
-        cardElement,
-      );
+      updateCardVisuals(cardElement, allMissions[missionIndex]);
+      completedMissions.appendChild(cardElement);
+      showStatusMessage("Mission completed successfully!");
     } else if (percentage < 100 && currentStatus === "completed") {
       allMissions[missionIndex].status = "active";
-      toggleMissionStatus(
-        activeMissions,
-        "2H LEFT",
-        "MARK ALL AS COMPLETE",
-        "Mission moved back to active missions.",
-        cardElement,
-      );
+      updateCardVisuals(cardElement, allMissions[missionIndex]);
+      activeMissions.appendChild(cardElement);
+      showStatusMessage("Mission moved back to active missions.");
+    } else if (percentage < 100) {
+      updateCardVisuals(cardElement, allMissions[missionIndex]);
     }
+
     localStorage.setItem("allMissions", JSON.stringify(allMissions));
+  }
+}
+
+function initFormPage() {
+  const editingMissionId = localStorage.getItem("editingMissionId");
+
+  // Eğer güncelleme modundaysak (LocalStorage'da not varsa)
+  if (editingMissionId) {
+    const allMissions = JSON.parse(localStorage.getItem("allMissions")) || [];
+    const missionToEdit = allMissions.find(
+      (m) => String(m.id) === String(editingMissionId),
+    );
+
+    if (missionToEdit) {
+      // 1. Temel bilgileri doldur
+      const missionMainTitle = document.getElementById("missionMainTitle");
+      if (missionMainTitle) missionMainTitle.value = missionToEdit.title;
+      const targetRadio = document.querySelector(
+        `input[name="missionType"][value="${missionToEdit.type}"]`,
+      );
+
+      if (targetRadio) {
+        targetRadio.checked = true;
+
+        targetRadio.parentElement.classList.add("mission-types--active");
+      }
+
+      missionToEdit.steps.forEach((step, index) => {
+        let stepInputs = document.querySelectorAll(".list-item__input");
+        let timeButtons = document.querySelectorAll(".set-time__button");
+
+        // Eğer bu adım için satır yoksa:
+        if (!stepInputs[index]) {
+          const parentList = document.getElementById("stepList");
+          const addStepButton = document.getElementById("addStepButton");
+
+          // 1. Sadece İLK gerçek input'un bulunduğu satırı bul (butonları atlamak için)
+          const firstRow = stepInputs[0].closest(".breakdown__list-item");
+          const clonedRow = firstRow.cloneNode(true);
+
+          // 2. Klonun içini temizle
+          clonedRow.querySelector(".list-item__input").value = "";
+
+          // İkonun silinmemesi için sadece span'in içindeki yazıyı değiştiriyoruz
+          const timeSpan = clonedRow.querySelector(".set-time__button span");
+          if (timeSpan) timeSpan.textContent = "SET TIME";
+
+          // Sıra numarasını dinamik güncelle (02, 03, 04 şeklinde)
+          const numberSpan = clonedRow.querySelector(".list-item__number");
+          if (numberSpan) {
+            numberSpan.textContent = String(index + 1).padStart(2, "0");
+          }
+
+          // 3. İŞTE BÜYÜ: Yeni satırı TAM OLARAK "Add Step" butonunun ÖNÜNE ekle!
+          parentList.insertBefore(clonedRow, addStepButton);
+
+          // 4. Ekledikten sonra listeyi tekrar güncelle
+          stepInputs = document.querySelectorAll(".list-item__input");
+          timeButtons = document.querySelectorAll(".set-time__button");
+        }
+
+        // VERİLERİ YAZDIRMA KISMI
+        if (stepInputs[index]) {
+          stepInputs[index].value = step.name;
+        }
+
+        if (timeButtons[index]) {
+          // Yine ikonun silinmemesi için sadece span'i hedef alıyoruz
+          const timeSpan = timeButtons[index].querySelector("span");
+          if (timeSpan) {
+            timeSpan.textContent = step.time;
+          }
+        }
+      });
+    }
   }
 }
 
@@ -433,41 +536,43 @@ function renderMissions() {
   allMissions.forEach((mission) => {
     const cardClone = missionCardTemplate.content.cloneNode(true);
     const cardElement = cardClone.querySelector(".mission-card");
-    const ulElement = cardClone.querySelector(".mission-card__list");
+    const ulElement = cardElement.querySelector(".mission-card__list");
+    const cardHeader = cardElement.querySelector(".mission-card__header");
+    const titleElement = cardElement.querySelector(".mission-title");
+    const typeElement = cardElement.querySelector(".mission-card__type");
+    const chevronIcon = cardElement.querySelector(".chevron-icon");
+    const cardBody = cardElement.querySelector(".mission-card__body");
+    const updateButton = cardElement.querySelector(".update__button");
+
+    const completeAllButton = cardElement.querySelector(
+      ".complete-all__button",
+    );
+    const removeButton = cardElement.querySelector(".remove-card__button");
+    const statusTime = cardElement.querySelector(".status__time");
 
     cardElement.id = `missionCard-${mission.id}`;
-    cardClone.querySelector(".mission-title").textContent = mission.title;
-    cardClone.querySelector(".mission-card__type").textContent = mission.type;
+    titleElement.textContent = mission.title;
+    typeElement.textContent = mission.type;
 
     mission.steps.forEach((step) => {
       const stepClone = cardStepTemplate.content.cloneNode(true);
-      const checkbox = cardElement.querySelector(".task-check");
+      const stepCheckbox = stepClone.querySelector(".task-check");
+      const stepText = stepClone.querySelector(".task-text");
+      const stepTime = stepClone.querySelector(".list-item__time");
 
-      stepClone.querySelector(".task-text").textContent = step.name;
-      stepClone.querySelector(".list-item__time").textContent = step.time;
-      checkbox.checked = step.completed;
+      stepText.textContent = step.name;
+      stepTime.textContent = step.time;
+      stepCheckbox.checked = step.completed;
 
       ulElement.appendChild(stepClone);
     });
-
-    const isCompleted = mission.status === "completed";
-    const targetContainer = isCompleted ? completedMissions : activeMissions;
-
-    if (isCompleted) {
-      cardClone.querySelector(".mission-card__status").textContent =
-        "Completed";
-      cardClone.querySelector(".complete-all__button").textContent =
-        "MARK ALL AS INCOMPLETE";
-    }
-
-    targetContainer.appendChild(cardClone);
-
-    const cardHeader = cardClone.querySelector(".mission-card__header");
-    const chevronIcon = cardClone.querySelector(".chevron-icon");
-    const cardBody = cardClone.querySelector(".mission-card__body");
     const cardCheckboxes = cardElement.querySelectorAll(".task-check");
-    const completeAllButton = cardClone.querySelector(".complete-all__button"); // Kendi class'ını yaz
-    const removeButton = cardClone.querySelector(".remove-card__button");
+    const remainingTimeText = calculateRemainingTime(mission.steps);
+
+    updateCardVisuals(cardElement, mission);
+
+    const targetContainer =
+      mission.status === "completed" ? completedMissions : activeMissions;
 
     cardHeader?.addEventListener("click", () => {
       chevronIcon.classList.toggle("rotate");
@@ -478,6 +583,12 @@ function renderMissions() {
       checkbox.addEventListener("change", () => {
         updateProgress(cardElement);
       });
+    });
+
+    updateButton?.addEventListener("click", () => {
+      localStorage.setItem("editingMissionId", mission.id);
+
+      window.location.href = "startmission.html";
     });
 
     completeAllButton?.addEventListener("click", () => {
@@ -491,7 +602,7 @@ function renderMissions() {
       updateProgress(cardElement);
     });
 
-    removeBtn?.addEventListener("click", () => {
+    removeButton?.addEventListener("click", () => {
       cardElement.remove();
 
       let updatedMissions =
@@ -500,6 +611,8 @@ function renderMissions() {
       localStorage.setItem("allMissions", JSON.stringify(updatedMissions));
       showStatusMessage("Mission removed successfully.");
     });
+
     updateProgress(cardElement);
+    targetContainer.appendChild(cardClone);
   });
 }
