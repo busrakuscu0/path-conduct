@@ -55,6 +55,25 @@
 
           <div class="flex-column" id="activeMissions">
             <h2>Active Missions</h2>
+            <a
+              href="startmission.html"
+              class="flex-column empty-state"
+              id="emptyState"
+            >
+              <span>
+                <img
+                  class="empty-state__icon"
+                  src="assets/icons/add_2_16dp_1F1F1F_FILL1_wght400_GRAD0_opsz20.svg"
+                  alt="Add Icon"
+                />
+              </span>
+              <span class="box__title" id="emptyStateTitle"
+                >Ready to initiate your first mission?</span
+              >
+              <span class="box__text"
+                >Click to break down your first mission.</span
+              ></a
+            >
           </div>
 
           <div id="statusMessage" class="status-message hidden">
@@ -80,9 +99,9 @@
       <div class="flex-column mission-card" id="missionCard">
         <div class="flex-row mission-card__header">
           <div class="flex-row">
-            <div class="flex-row progress-circular">
+            <div class="flex-row progress-circular progress-circular--sm">
               <div class="flex-row inner-circle">
-                <span class="progress-value">0%</span>
+                <span class="progress-value progress-value--sm">0%</span>
               </div>
             </div>
 
@@ -91,6 +110,7 @@
               <span class="mission-card__type"></span>
             </div>
           </div>
+          <span class="focus-badge hidden">FOCUS</span>
           <div class="flex-row mission-card__status">
             <div class="flex-column card__status">
               <span class="status__label">TIME REMAINING</span>

@@ -42,9 +42,9 @@
         </nav>
       </header>
 
-      <main class="flex-row main__container">
+      <main class="flex-row main__container justify-space-between">
         <div class="flex-column workspace">
-          <div class="mission-creator">
+          <div class="flex-row mission-creator">
             <input
               type="text"
               id="createMissionInput"
@@ -53,7 +53,7 @@
             />
             <a href="startmission.html" class="btn btn--secondary"
               ><span class="flex-row btn__content"
-                >CREATE <br />
+                >INITIATE <br />
                 MISSION
                 <img
                   src="./assets/icons/arrow-forward.svg"
@@ -61,9 +61,46 @@
               /></span>
             </a>
           </div>
+          <a
+            href="startmission.html"
+            class="flex-column empty-state"
+            id="emptyState"
+          >
+            <span>
+              <img
+                class="empty-state__icon"
+                src="assets/icons/add_2_16dp_1F1F1F_FILL1_wght400_GRAD0_opsz20.svg"
+                alt="Add Icon"
+              />
+            </span>
+            <span class="box__title" id="emptyStateTitle"
+              >Ready to initiate your first mission?</span
+            >
+            <span class="box__text"
+              >Click to break down your first mission.</span
+            >
+          </a>
           <div class="focus-missions"></div>
         </div>
-        <div class="progress-card"></div>
+        <div class="flex-column dashboard">
+          <div class="flex-column progress-card">
+            <div class="flex-row progress-circular progress-circular--lg">
+              <div class="flex-row inner-circle">
+                <span class="progress-value progress-value--lg"
+                  >🚀 ADD MISSIONS TO TRACK PROGRESS</span
+                >
+              </div>
+            </div>
+            <span>You've completed 4/6 core sessions.</span>
+          </div>
+          <div class="flex-column time-remaining">
+            <div class="flex-row justify-space-between time-remaining__header">
+              <span>TIME REMAINING</span>
+              <span>2H 45M LEFT</span>
+            </div>
+            <span>-----------------------</span>
+          </div>
+        </div>
       </main>
     </div>
     <footer class="footer">

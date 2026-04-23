@@ -152,8 +152,41 @@ fieldset {
 
 
 .workspace {
+  gap: 20px;
   align-items: center;
   justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard {
+  max-width: 400px;
+  gap: 120px;
+  align-items: center;
+
+}
+
+
+.progress-card {
+  gap: 24px;
+  align-items: center;
+
+  padding: 12px;
+
+}
+
+.time-remaining {
+  flex: 1;
+  border: 1px solid #3b444b;
+  border-radius: 10px;
+  padding: 24px 40px;
+}
+
+.time-remaining__header {
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .mission-creator {
@@ -162,6 +195,7 @@ fieldset {
   justify-content: center;
   padding: 6px 6px 6px 16px;
   width: 100%;
+  flex: 1;
   border: none;
   border-radius: 10px;
   background-color: #0b0b0ba8;
@@ -173,7 +207,7 @@ fieldset {
 }
 
 .mission-creator__input {
-  flex: 1;
+  width: 100%;
   border: none;
   outline: none;
   background: none;
@@ -584,8 +618,8 @@ fieldset {
   align-items: center;
   margin-top: 40px;
   border-left: 4px solid #134b4bb2;
-  background-color: #171a1981;
-  border: 1px solid #393d3d25;
+  background-color: #333e3a2e;
+  border: 1px solid #595f5f72;
   border-radius: 10px;
   padding: 40px;
   width: 100%;
@@ -606,18 +640,42 @@ fieldset {
   width: 100%;
 }
 
+.focus-badge {
+  background-color: rgba(162, 136, 227, 0.811);
+  color: white;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+
+
 .progress-circular {
-  width: 60px;
-  height: 60px;
   border-radius: 50%;
   background: conic-gradient(var(--color-tertiary) var(--percent, 0%), #1a252b 0deg);
   align-items: center;
   justify-content: center;
+
+}
+
+
+
+.progress-circular--lg {
+  width: 200px;
+  height: 200px;
+}
+
+.progress-circular--sm {
+  width: 60px;
+  height: 60px;
 }
 
 .inner-circle {
-  width: 50px;
-  height: 50px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
   background-color: var(--color-neutral);
   border-radius: 50%;
   align-items: center;
@@ -625,7 +683,17 @@ fieldset {
 }
 
 .progress-value {
+  text-align: center;
+}
+
+.progress-value--lg {
+  font-size: 16px;
+
+}
+
+.progress-value--sm {
   font-size: 12px;
+
 }
 
 
@@ -1026,6 +1094,35 @@ fieldset {
 
 
 
+.empty-state {
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 32px 60px;
+  max-width: fit-content;
+  margin-top: 100px;
+  background-color: #1d2725a5;
+  border: 2px dotted #374A4D;
+  border-radius: 20px;
+
+}
+
+.empty-state__icon {
+  padding: 12px;
+  background-color: #A5B5C1;
+  border-radius: 24px;
+}
+
+.box__title {
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+
+
+
 
 
 
@@ -1045,16 +1142,16 @@ fieldset {
 .footer {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+  gap: 100px;
   margin: 10px;
-  color: #706e6e;
+  color: #c9c3c38b;
 }
 
 .footer-right {
   display: flex;
   align-items: baseline;
-  gap: 20px;
+  gap: 12px;
 }
 
 

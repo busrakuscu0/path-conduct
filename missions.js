@@ -7,7 +7,7 @@ const activeMissions = document.getElementById("activeMissions");
 const completedMissions = document.getElementById("completedMissions");
 const missionCardTemplate = document.getElementById("missionCardTemplate");
 const cardStepTemplate = document.getElementById("cardStepTemplate");
-
+const emptyState = document.getElementById("emptyState");
 const missionMainTitle = document.getElementById("missionMainTitle");
 const titleError = document.getElementById("titleError");
 const missionTypes = document.getElementsByName("missionType");
@@ -51,7 +51,6 @@ let currentHour = 0;
 let currentMinute = 0;
 let finalTime = null;
 let formCorrect = true;
-let editingMissionId = null;
 
 // FUNCTIONS
 
@@ -209,7 +208,7 @@ function validateForm() {
     }
   }
 
-  const currentInputs = stepList.querySelectorAll('input[type="text"]');
+  const currentInputs = document.querySelectorAll(".list-item__input");
 
   if (currentInputs.length === 0) {
     atomicStepsError.textContent = "Please add at least one atomic step.";
@@ -326,9 +325,9 @@ formElement?.addEventListener("submit", function (event) {
       'input[name="missionType"]:checked',
     );
 
-    const stepInputs = document.querySelectorAll(".list-item__input");
+    const currentInputs = document.querySelectorAll(".list-item__input");
 
-    stepInputs.forEach((input) => {
+    currentInputs.forEach((input) => {
       const stepName = input.value.trim();
 
       const parentRow = input.closest(".breakdown__list-item");
@@ -342,20 +341,52 @@ formElement?.addEventListener("submit", function (event) {
       });
     });
 
-    const missionData = {
-      id: Date.now().toString(),
-      title: missionMainTitle.value.trim(),
-      focusMode: toggleButton?.getAttribute("aria-checked") === "true",
-      type: selectedType.value,
-      steps: atomicStepsArray,
-      status: "active",
-    };
-
     const allMissions = JSON.parse(localStorage.getItem("allMissions")) || [];
-    allMissions.push(missionData);
-    localStorage.setItem("allMissions", JSON.stringify(allMissions));
+    const editingMissionId = localStorage.getItem("editingMissionId");
 
-    window.location.href = "missions.html";
+    if (editingMissionId) {
+      // ==========================================
+      // 🔄 GÜNCELLEME (UPDATE) MODU
+      // ==========================================
+      const missionIndex = allMissions.findIndex(
+        (m) => String(m.id) === String(editingMissionId),
+      );
+
+      if (missionIndex !== -1) {
+        // Zekice bir dokunuş: Eğer eski adımlarda işaretlenmiş (completed: true)
+        // olanlar varsa, güncellerken onların check durumunu sıfırlamayalım, koruyalım!
+        const oldSteps = allMissions[missionIndex].steps || [];
+        atomicStepsArray.forEach((newStep, index) => {
+          if (oldSteps[index]) {
+            newStep.completed = oldSteps[index].completed;
+          }
+        });
+
+        // Mevcut görevin verilerini yenileriyle değiştir
+        allMissions[missionIndex].title = missionMainTitle.value.trim();
+        allMissions[missionIndex].focusMode =
+          toggleButton?.getAttribute("aria-checked") === "true";
+        allMissions[missionIndex].type = selectedType.value;
+        allMissions[missionIndex].steps = atomicStepsArray;
+      }
+
+      // Güncelleme bitti, notu çöpe at ki bir sonraki sefer form boş açılsın
+      localStorage.removeItem("editingMissionId");
+      window.location.href = "missions.html?updated=true";
+    } else {
+      const missionData = {
+        id: Date.now().toString(),
+        title: missionMainTitle.value.trim(),
+        focusMode: toggleButton?.getAttribute("aria-checked") === "true",
+        type: selectedType.value,
+        steps: atomicStepsArray,
+        status: "active",
+      };
+      allMissions.push(missionData);
+      window.location.href = "missions.html?created=true";
+    }
+
+    localStorage.setItem("allMissions", JSON.stringify(allMissions));
   }
 });
 
@@ -403,7 +434,7 @@ function updateCardVisuals(cardElement, mission) {
     completeAllButton.textContent = "MARK ALL AS INCOMPLETE";
   } else {
     const remainingTime = calculateRemainingTime(mission.steps);
-    statusTime.textContent = remainingTime;
+    statusTime.textContent = `${remainingTime} LEFT`;
     completeAllButton.textContent = "MARK ALL AS COMPLETE";
   }
 }
@@ -450,6 +481,7 @@ function updateProgress(cardElement) {
     }
 
     localStorage.setItem("allMissions", JSON.stringify(allMissions));
+    checkGeneralEmptyState();
   }
 }
 
@@ -518,12 +550,35 @@ function initFormPage() {
 
         if (timeButtons[index]) {
           // Yine ikonun silinmemesi için sadece span'i hedef alıyoruz
-          const timeSpan = timeButtons[index].querySelector("span");
+          const timeSpan = timeButtons[index];
           if (timeSpan) {
             timeSpan.textContent = step.time;
           }
         }
       });
+    }
+    const submitButton = document.querySelector(".submit__button");
+    submitButton.textContent = "UPDATE MISSION";
+  }
+}
+
+function checkGeneralEmptyState() {
+  const allMissions = JSON.parse(localStorage.getItem("allMissions")) || [];
+  const emptyState = document.getElementById("emptyState");
+  const emptyStateTitle = document.getElementById("emptyStateTitle");
+  const activeMissionList = allMissions.filter((m) => m.status === "active");
+
+  if (activeMissionList.length !== 0) {
+    // Aktif görev varsa kutuyu gizle
+    emptyState.classList.add("hidden");
+  } else if (activeMissionList.length === 0) {
+    // Aktif görev yoksa kutuyu göster ve duruma göre yazıyı belirle
+    emptyState.classList.remove("hidden");
+
+    if (allMissions.length !== 0) {
+      emptyStateTitle.textContent = "All caught up! Ready for a new challenge?";
+    } else {
+      emptyStateTitle.textContent = "Ready to initiate your first mission?";
     }
   }
 }
@@ -532,6 +587,8 @@ function renderMissions() {
   if (!activeMissions || !completedMissions || !missionCardTemplate) return;
 
   const allMissions = JSON.parse(localStorage.getItem("allMissions")) || [];
+
+  // GÖREV SAYISI KONTROLÜ
 
   allMissions.forEach((mission) => {
     const cardClone = missionCardTemplate.content.cloneNode(true);
@@ -543,13 +600,16 @@ function renderMissions() {
     const chevronIcon = cardElement.querySelector(".chevron-icon");
     const cardBody = cardElement.querySelector(".mission-card__body");
     const updateButton = cardElement.querySelector(".update__button");
+    const focusBadge = cardElement.querySelector(".focus-badge");
 
     const completeAllButton = cardElement.querySelector(
       ".complete-all__button",
     );
     const removeButton = cardElement.querySelector(".remove-card__button");
     const statusTime = cardElement.querySelector(".status__time");
-
+    if (mission.focusMode === true) {
+      focusBadge.classList.remove("hidden");
+    }
     cardElement.id = `missionCard-${mission.id}`;
     titleElement.textContent = mission.title;
     typeElement.textContent = mission.type;
@@ -583,6 +643,7 @@ function renderMissions() {
       checkbox.addEventListener("change", () => {
         updateProgress(cardElement);
       });
+      checkGeneralEmptyState();
     });
 
     updateButton?.addEventListener("click", () => {
@@ -600,6 +661,7 @@ function renderMissions() {
         cardCheckboxes.forEach((cb) => (cb.checked = true));
       }
       updateProgress(cardElement);
+      checkGeneralEmptyState();
     });
 
     removeButton?.addEventListener("click", () => {
@@ -610,9 +672,18 @@ function renderMissions() {
       updatedMissions = updatedMissions.filter((m) => m.id !== mission.id);
       localStorage.setItem("allMissions", JSON.stringify(updatedMissions));
       showStatusMessage("Mission removed successfully.");
+      checkGeneralEmptyState();
     });
 
     updateProgress(cardElement);
     targetContainer.appendChild(cardClone);
   });
+}
+
+const urlParams = window.location.search;
+
+if (urlParams.includes("updated=true")) {
+  showStatusMessage("Mission updated successfully!"); // Güncelleme mesajı
+} else if (urlParams.includes("created=true")) {
+  showStatusMessage("New mission initiated!"); // Yeni kayıt mesajı
 }
